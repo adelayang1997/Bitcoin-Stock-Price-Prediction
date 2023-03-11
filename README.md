@@ -6,7 +6,7 @@ The goal of this study is to predict prices for Bitcoin using Machine Learning T
 Kaggle https://www.kaggle.com/datasets/mczielinski/bitcoin-historical-data
 CSV files for select bitcoin exchanges for the time period of Jan 2012 to December March 2021, with minute to minute updates of OHLC (Open, High, Low, Close), Volume in BTC and indicated currency, and weighted bitcoin price. Timestamps are in Unix time. Timestamps without any trades or activity have their data fields filled with NaNs. If a timestamp is missing, or if there are jumps, this may be because the exchange (or its API) was down, the exchange (or its API) did not exist, or some other unforeseen technical error in data reporting or gathering.
 
-##Task addressed
+## Task addressed
 1. Time series analysis:
 Time Series is a series of observations taken at specified time intervals usually equal intervals. Analysis of the series helps us to predict future values based on previous
 observed values. In Time series, we have only 2 variables, time & the variable we want to forecast.
@@ -17,7 +17,7 @@ Seasonality - seasonal variances. Ex: Icecream sales increases in Summer only
 Noise or Irregularity - Spikes & troughs at random intervals
 Cyclicity - behavior that repeats itself after large interval of time, like months, years etc
 
-##Method and Model
+## Method and Model
 To solve the problem using Machine learning, I first tried to categorize the situation and tried to find previous solutions on how they solved it. I quickly learned that, since the issue involves prices that are changing with time, this could be modeled as a Series prediction problem. Also, as a machine learning problem with the features being the previous prices and the output being the price predicted for that day.
 ###1. ARIMA
 Autoregressive integrated moving average (ARIMA) is a statistical regression model, which can be utilized in time series forecasting applications, such as finance. ARIMA makes predictions while considering the lagged values of a time series, while accommodating for non-stationarity. The model, which is one of the most popular linear models for time series forecasting, originates from the autoregressive (AR) and moving average (MA) models, as well as their combination, also known as ARMA. For making predictions with the ARIMA model, we had to follow a step-by-step procedure to be able to feed the data to the ARIMA model. This first involved Visualizing the time series data: It is essential to analyze the trends prior to building any kind of time series model. The details we are interested in pertains to any kind of trend, seasonality or random behavior in the series.
@@ -29,11 +29,11 @@ The training algorithm for random forests applies the general technique of boots
 For b = 1, …, B:
 Sample, with replacement, n training examples from X, Y; call these Xb, Yb. Train a classification or regression tree fb on Xb, Yb. After training, predictions for unseen samples x’ can be made by averaging the predictions from all the individual regression trees on x’ or by taking the majority vote in the case of classification trees.
 This bootstrapping procedure leads to better model performance because it decreases the variance of the model, without increasing the bias. This means that while the predictions of a single tree are highly sensitive to noise in its training set, the average of many trees is not, as long as the trees are not correlated. Simply training many trees on a single training set would give strongly correlated trees (or even the same tree many times, if the training algorithm is deterministic); bootstrap sampling is a way of de-correlating the trees by showing them different training sets.
-###3. Recurrent Neural Net
+### 3. Recurrent Neural Net
 RNNs provide a generalization of the feed forward network model for dealing with sequential data, with the addition of an ongoing internal state the serving as memory buffer for processing sequences.
-##Experiments and Evolutions
-###Data Exploration:
-###Stationarity:
+## Experiments and Evolutions
+### Data Exploration:
+### Stationarity:
 Time Series(TS) need to be stationary because,
 1. If a TS has a particular behavior over a time interval, then there's a high probability that over a different interval, it will have same behavior, provided TS is stationary. This helps in forecasting accurately.
 2. Theories & Mathematical formulas ae more mature & easier to apply for as TS which is stationary.
@@ -50,20 +50,20 @@ Stationarity check and seasonal decomposition:
 Decompose seasonal component of the time series.
 The series are not stationary.
 After reviewing the dataset, I think I need to recode the datetime since it is better to use the dataset sorted by date not by minutes. Then I group the dataset by date and take the average price of all minutes in the day as the price of the day.
-###1. Random Forest
+### 1. Random Forest
 The result of random forest model trained on data set from 2012 to 2021 tested on March 2021. Model use window size 5 and 1000 epochs during training and testing. The result is predict the next 30 days.
-###2. RNN
+### 2. RNN
 Compare the difference of predicted price and the real price. The difference is larger when the time is further to the training set. That is why I only want to predict the price of one month.
-###3. ARIMA
+### 3. ARIMA
 According to the smallest AIC, the optimal parameters are determined to be p=1, q=0, so the model is ARIMA(1,1,0)
 Model Selection:
 Analysis of residues
 Predictions:
 Compare the three model, ARIMA has the best result. Because Bitcoin has drastic changes from 2020 to 2021, the error value will increase. If you only look at the error value before 2020, the three methods can be controlled within 1000.
 
-##Future work
+## Future work
 Now, to investigate the claim of bitcoin related news and tweets affecting the bitcoin
 prices, so for the future work should add News data (Text to Vectors) or other factors (mining cost, cryptocurrency).
 
-##Reference 
+## Reference 
 McNally, S., Roche, J., & Caton, S. (2018, March). Predicting the price of bitcoin using machine learning. In 2018 26th euromicro international conference on parallel, distributed and network-based processing (PDP) (pp. 339-343). IEEE. T. Phaladisailoed and T. Numnonda, "Machine Learning Models Comparison for Bitcoin Price Prediction," 2018 10th International Conference on Information Technology and Electrical Engineering (ICITEE), 2018, pp. 506-511, doi: 10.1109/ICITEED.2018.8534911.
